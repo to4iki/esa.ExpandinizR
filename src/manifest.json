@@ -1,0 +1,17 @@
+{
+    "manifest_version": 2,
+    "name": "esa.expandinizr",
+    "version": "0.0.1",
+    "description": "Chrome extension that improves the esa.io experience",
+    "homepage_url": "https://github.com/to4iki/esa.Expandinizr",
+    "content_scripts": [
+        {
+            "matches": [
+                "https://*.esa.io/*edit"
+            ],
+            "js": [
+                "index.js"
+            ]
+        }
+  ]
+}

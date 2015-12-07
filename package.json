@@ -1,0 +1,34 @@
+{
+    "name": "esa.Expandinizr",
+    "version": "0.0.1",
+    "description": "Chrome extension that improves the esa.io experience",
+    "main": "lib/index.js",
+    "homepage": "https://github.com/to4iki/esa.Expandinizr",
+    "author": {
+        "name": "tsk takezawa",
+        "email": "tsk.take815@gmail.com",
+        "url": "https://github.com/to4iki"
+    },
+    "license": {
+        "type": "MIT",
+        "url": "http://to4iki.mit-license.org/"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/to4iki/esa.Expandinizr.git"
+    },
+    "keywords": [
+        "esa",
+        "chrome"
+    ],
+    "files": [
+        "lib"
+    ],
+    "scripts": {
+        "build": "babel src --out-dir lib --source-maps-inline",
+        "release": "rm -rf lib && npm run build && cp ./src/manifest.json ./lib"
+    },
+    "devDependencies": {
+        "babel-cli": "^6.3.15"
+    }
+}
