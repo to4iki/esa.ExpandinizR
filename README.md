@@ -6,7 +6,8 @@ esa.ExpandinizR
 Chrome extension that improves the esa.io experience.
 
 ## Feature
-- Swap post_form | preview
+- Toggle preview
+- Swap markdown_form | preview
 
 ## Development
 
