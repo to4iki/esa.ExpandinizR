@@ -1,54 +1,102 @@
 'use strict';
 
-const Dom = {
-    form: document.getElementById('form'),
-    preview: document.getElementById('preview'),
-    previewHeader: document.getElementsByClassName('diff-preview')[0]
-};
+class EsaPatch {
 
-const ClassName = {
-    isLeft: "is-left",
-    isRight: "is-right"
-};
-
-const DomFunctions = {
-    isLeft: (e) => e.classList.contains(ClassName.isLeft),
-    isRight: (e) => e.classList.contains(ClassName.isRight),
-    removeLeft: (e) => e.classList.remove(ClassName.isLeft),
-    removeRight: (e) => e.classList.remove(ClassName.isRight),
-    addLeft: (e) => e.classList.add(ClassName.isLeft),
-    addRight: (e) => e.classList.add(ClassName.isRight),
-    swap: (e1, e2) => {
-        let exec = (e1, e2) => {
-            DomFunctions.removeLeft(e1);
-            DomFunctions.removeRight(e2);
-            DomFunctions.addLeft(e2);
-            DomFunctions.addRight(e1)
-        }
-
-        DomFunctions.isLeft(e1) === true ? exec(e1, e2) : exec(e2, e1);
-    }
-};
-
-class Injector {
-
-    constructor() {
+    get formContainer() {
+        return document.getElementById('form');
     }
 
-    swapPreview() {
-        let template = '<input type="checkbox" name="swap_preview" id="swap_preview" value="1">';
-        template += '<label for="swap_preview">Swap</label>';
-
-        Dom.previewHeader.insertAdjacentHTML('afterbegin', template);
-        document.getElementById('swap_preview').addEventListener('click', () => {
-            DomFunctions.swap(Dom.form, Dom.preview);
-        });
+    get previewContainer() {
+        return document.getElementById('preview');
     }
 
-    togglePreview() {
-        // TODO: Implement
+    get previewHeader() {
+        return document.getElementsByClassName('diff-preview')[0]
     }
 }
 
-let injector = new Injector();
-injector.swapPreview();
+class EsaSwapPreviewPatch extends EsaPatch {
+
+    constructor() {
+        super();
+
+        this.formMeta = new EsaContainerMeta(this.formContainer);
+        this.previewMeta = new EsaContainerMeta(this.previewContainer);
+    }
+
+    get swapPreviewElement() {
+        let template = '<input type="checkbox" name="swap_preview" id="swap_preview" value="1">';
+        template += '<label for="swap_preview">Swap</label>';
+
+        return template;
+    }
+
+    insertSwapPreviewElement() {
+        this.previewHeader.insertAdjacentHTML(
+            'afterbegin',
+             this.swapPreviewElement
+        );
+    }
+
+    addSwapPreviewListener() {
+        document.getElementById('swap_preview').addEventListener('click', () => {
+            EsaContainerMeta.swap(this.formMeta, this.previewMeta);
+        });
+    }
+
+    injecte() {
+        this.insertSwapPreviewElement();
+        this.addSwapPreviewListener();
+    }
+}
+
+class EsaContainerMeta extends EsaPatch {
+
+    constructor(element) {
+        super();
+
+        this.element = element;
+    }
+
+    get classSelectors() {
+        return this.element.classList;
+    }
+
+    get isLeft() {
+        return this.classSelectors.contains("is-left");
+    }
+
+    get isRight() {
+        return this.classSelectors.contains("is-right");
+    }
+
+    removeLeft() {
+        this.classSelectors.remove("is-left");
+    }
+
+    removeRight() {
+        this.classSelectors.remove("is-right");
+    }
+
+    addLeft() {
+        this.classSelectors.add("is-left");
+    }
+
+    addRight() {
+        this.classSelectors.add("is-right");
+    }
+
+    static swap(s1, s2) {
+        const execute = (s1, s2) => {
+            s1.removeLeft();
+            s2.removeRight();
+            s2.addLeft();
+            s1.addRight();
+        }
+
+        s1.isLeft === true ? execute(s1, s2) : execute(s2, s1);
+    }
+}
+
+const swapPatch = new EsaSwapPreviewPatch();
+swapPatch.injecte();
