@@ -29,6 +29,7 @@
         "release": "rm -rf lib && npm run build && cp ./src/manifest.json ./lib"
     },
     "devDependencies": {
-        "babel-cli": "^6.3.15"
+        "babel-cli": "^6.3.15",
+        "babel-preset-es2015": "^6.3.13"
     }
 }
