@@ -7,7 +7,7 @@
     "content_scripts": [
         {
             "matches": [
-                "https://*.esa.io/*edit"
+                "https://*.esa.io/*"
             ],
             "js": [
                 "index.js"
